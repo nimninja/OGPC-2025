@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 44ece8016ef9edc45b393d83582f5cd1
+labels:
+- Scenes
+- cave
+- cliff
+- pine
+- spruce
+- tree
+timeCreated: 1493940919
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: scenes
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 89939
+  packageName: Rocky Hills Environment - Light Pack
+  packageVersion: 1.0
+  assetPath: Assets/Toby Fredson/Rocky Hills Environment - Light Pack/Scenes/ATSG_Sample.unity
+  uploadId: 178734

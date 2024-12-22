@@ -9,6 +9,7 @@ public class treeHarvest : MonoBehaviour
     public Image axeSilhouette; // The silhouette axe (always visible)
     public TextMeshProUGUI harvestText; // The "Harvest" text
     public GameObject woodManager; // Reference to the empty object with the AddWood function
+    public GameObject hotbarManager; // Reference to the object with the hotbar script
 
     public float harvestTime = 3f; // Time required to complete the harvest
     private float holdTimer = 0f; // Timer to track button hold duration
@@ -39,9 +40,9 @@ public class treeHarvest : MonoBehaviour
     {
         if (other.CompareTag("Tree"))
         {
-            currentTree = other.gameObject; // Store the tree being harvested
-            axePanel.SetActive(true); // Show the UI
-            ResetHarvest(); // Reset for a new tree
+            currentTree = other.gameObject;
+            axePanel.SetActive(true);
+            ResetHarvest();
         }
     }
 
@@ -50,7 +51,7 @@ public class treeHarvest : MonoBehaviour
         if (other.CompareTag("Tree"))
         {
             currentTree = null;
-            axePanel.SetActive(false); // Hide the UI
+            axePanel.SetActive(false);
             ResetHarvest();
         }
     }
@@ -59,23 +60,20 @@ public class treeHarvest : MonoBehaviour
     {
         Debug.Log("Harvest complete!");
 
-        // Call AddWood function on the referenced woodManager GameObject
         if (woodManager != null)
         {
-            var woodScript = woodManager.GetComponent<amountManager>(); // Replace YourScriptName with the script's name
+            var woodScript = woodManager.GetComponent<amountManager>();
             if (woodScript != null)
             {
-                woodScript.AddWood(3); // Pass the value 3 to the AddWood function
+                woodScript.AddWood(3);
             }
         }
 
-        // Destroy the tree
         if (currentTree != null)
         {
             Destroy(currentTree);
         }
 
-        // Hide the UI and reset
         ResetHarvest();
         axePanel.SetActive(false);
     }
@@ -91,7 +89,16 @@ public class treeHarvest : MonoBehaviour
     {
         if (other.CompareTag("Tree") && Input.GetKeyDown(KeyCode.H))
         {
-            isHarvesting = true; // Start harvesting
+            // Check if the first hotbar slot is selected before starting harvesting
+            var hotbarScript = hotbarManager.GetComponent<hotbar>(); 
+            if (hotbarScript != null && hotbarScript.GetCurrentSlot() == 1)
+            {
+                isHarvesting = true;
+            }
+            else
+            {
+                Debug.Log("You need to have Slot 1 selected to harvest!");
+            }
         }
     }
 }

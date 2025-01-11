@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Tree
   - Door
+  - OtherDoor
   layers:
   - Default
   - TransparentFX

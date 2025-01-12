@@ -4,113 +4,70 @@ using System.Collections;
 public class DoorOpen : MonoBehaviour
 {
     [Header("Door Settings")]
-    private GameObject door; // The door object to rotate
+    public GameObject door; // The door object to rotate
     public float rotationSpeed = 2.0f; // Speed of the rotation
-    public float defaultRotationAmount = 90f; // Default rotation amount (90 degrees)
+    public float rotationAmount = 140f; // How much the door should rotate
 
-    private bool isAnimating = false; // Prevent interaction while door is moving
+    private bool isOpen = false; // Track if the door is open
     private Coroutine animationCoroutine;
+    private bool isAnimating = false; // Prevent interaction while door is moving
+    private Vector3 forward;
+    private float initialXRotation;
+    private float initialZRotation;
 
-    private void OnTriggerEnter(Collider other)
+    void Start()
     {
-        if (other.CompareTag("Door"))
-        {
-            door = other.gameObject; // Assign the door object
-            Debug.Log("Door detected and assigned in OnTriggerEnter");
-        }
-    }
+        // Set the forward direction to the right of the door's frame
+        forward = transform.right;
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Door") && other.gameObject == door)
-        {
-            Debug.Log("Door exited trigger");
-            // Do not set to null here; let the animation handle it
-        }
+        // Capture the initial X and Z rotations of the door
+        initialXRotation = door.transform.eulerAngles.x;
+        initialZRotation = door.transform.eulerAngles.z;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && door != null && !isAnimating)
+        if (Input.GetKeyDown(KeyCode.F) && !isAnimating)
         {
             if (animationCoroutine != null)
             {
                 StopCoroutine(animationCoroutine);
             }
 
-            // Start the rotation coroutine
-            animationCoroutine = StartCoroutine(DoRotation());
+            float dot = Vector3.Dot(forward, transform.InverseTransformPoint(transform.position).normalized);
+            animationCoroutine = StartCoroutine(DoRotationOpen(dot));
         }
     }
 
-    private IEnumerator DoRotation()
+    private IEnumerator DoRotationOpen(float forwardAmount)
     {
         isAnimating = true; // Lock interaction
 
-        if (door == null)
-        {
-            isAnimating = false;
-            yield break; // Exit coroutine if the door is null
-        }
+        Quaternion startRotation = Quaternion.Euler(initialXRotation, door.transform.eulerAngles.y, initialZRotation);
+        Quaternion endRotation;
 
-        // Determine if the door is currently open or closed
-        float currentYRotation = NormalizeAngle(door.transform.localEulerAngles.y);
-        float targetYRotation;
-
-        if (Mathf.Approximately(currentYRotation, NormalizeAngle(-90f)))
+        if (!isOpen)
         {
-            // Door is at -90 degrees, open it to 50 degrees
-            targetYRotation = NormalizeAngle(currentYRotation + 140f);
-        }
-        else if (Mathf.Approximately(currentYRotation, NormalizeAngle(50f)))
-        {
-            // Door is at 50 degrees, close it to -90 degrees
-            targetYRotation = NormalizeAngle(currentYRotation - 140f);
+            endRotation = Quaternion.Euler(initialXRotation, door.transform.eulerAngles.y + rotationAmount, initialZRotation);
+            isOpen = true;
         }
         else
         {
-            Debug.LogWarning("Door rotation is in an unexpected state");
-            isAnimating = false;
-            yield break; // Exit if the door is in an unexpected state
+            endRotation = Quaternion.Euler(initialXRotation, door.transform.eulerAngles.y - rotationAmount, initialZRotation);
+            isOpen = false;
         }
 
-        float startYRotation = currentYRotation;
         float elapsedTime = 0f;
-        while (elapsedTime < rotationSpeed)
+        float duration = rotationSpeed; // Use rotationSpeed as duration for consistency
+        while (elapsedTime < duration)
         {
-            if (door == null)
-            {
-                isAnimating = false;
-                yield break; // Exit coroutine if the door is null during animation
-            }
-
-            float currentYRotationInterpolated = Mathf.LerpAngle(startYRotation, targetYRotation, elapsedTime / rotationSpeed);
-            door.transform.localEulerAngles = new Vector3(
-                door.transform.localEulerAngles.x, // Preserve X rotation
-                currentYRotationInterpolated, // Modify Y rotation
-                door.transform.localEulerAngles.z // Preserve Z rotation
-            );
-
+            door.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        // Ensure the door ends at the exact target rotation
-        door.transform.localEulerAngles = new Vector3(
-            door.transform.localEulerAngles.x,
-            targetYRotation,
-            door.transform.localEulerAngles.z
-        );
+        door.transform.rotation = endRotation; // Ensure exact final position
 
-        Debug.Log("Animation finished. Setting door to null.");
-        door = null; // Clear the door reference after animation finishes
         isAnimating = false; // Unlock interaction
-    }
-
-    private float NormalizeAngle(float angle)
-    {
-        while (angle > 360f) angle -= 360f;
-        while (angle < 0f) angle += 360f;
-        return angle;
     }
 }

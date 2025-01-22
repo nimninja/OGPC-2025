@@ -11,7 +11,7 @@ public class OtherDoorOpen : MonoBehaviour
     private bool otherisAnimating = false; // Prevent interaction while the door is moving
     private Coroutine otheranimationCoroutine;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("OtherDoor"))
         {

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class toggleInventory : MonoBehaviour
 {
     public GameObject inventoryImage;
-    public Image inventoryButton;
+    public Image map;
 
     // Start is called before the first frame update
     void Start()
@@ -13,6 +13,7 @@ public class toggleInventory : MonoBehaviour
         if (inventoryImage != null)
         {
             inventoryImage.gameObject.SetActive(false);
+            map.gameObject.SetActive(false);
         }
     }
 
@@ -24,7 +25,7 @@ public class toggleInventory : MonoBehaviour
             if (inventoryImage != null)
             {
                 inventoryImage.gameObject.SetActive(!inventoryImage.gameObject.activeSelf);
-                inventoryButton.gameObject.SetActive(!inventoryButton.gameObject.activeSelf);
+                map.gameObject.SetActive(!map.gameObject.activeSelf);
             }
         }
     }

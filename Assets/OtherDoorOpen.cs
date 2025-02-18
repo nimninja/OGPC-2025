@@ -16,7 +16,6 @@ public class OtherDoorOpen : MonoBehaviour
         if (other.CompareTag("OtherDoor"))
         {
             otherDoor = other.gameObject; // Assign the door object
-            Debug.Log("OtherDoor detected and assigned in OnTriggerEnter");
         }
     }
 
@@ -24,7 +23,6 @@ public class OtherDoorOpen : MonoBehaviour
     {
         if (other.CompareTag("OtherDoor") && other.gameObject == otherDoor)
         {
-            Debug.Log("OtherDoor exited trigger");
             // Do not set to null here; let the animation handle it
         }
     }
@@ -69,7 +67,6 @@ public class OtherDoorOpen : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("OtherDoor rotation is in an unexpected state");
             otherisAnimating = false;
             yield break; // Exit if the door is in an unexpected state
         }
@@ -102,7 +99,6 @@ public class OtherDoorOpen : MonoBehaviour
             otherDoor.transform.localEulerAngles.z
         );
 
-        Debug.Log("Animation finished. Setting otherDoor to null.");
         otherDoor = null; // Clear the door reference after animation finishes
         otherisAnimating = false; // Unlock interaction
     }

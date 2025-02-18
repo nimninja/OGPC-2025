@@ -16,7 +16,6 @@ public class DoorOpen : MonoBehaviour
         if (other.CompareTag("Door"))
         {
             door = other.gameObject; // Assign the door object
-            Debug.Log("Door detected and assigned in OnTriggerEnter");
         }
     }
 
@@ -24,7 +23,6 @@ public class DoorOpen : MonoBehaviour
     {
         if (other.CompareTag("Door") && other.gameObject == door)
         {
-            Debug.Log("Door exited trigger");
             // Do not set to null here; let the animation handle it
         }
     }
@@ -69,7 +67,6 @@ public class DoorOpen : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Door rotation is in an unexpected state");
             isAnimating = false;
             yield break; // Exit if the door is in an unexpected state
         }
@@ -102,7 +99,6 @@ public class DoorOpen : MonoBehaviour
             door.transform.localEulerAngles.z
         );
 
-        Debug.Log("Animation finished. Setting door to null.");
         door = null; // Clear the door reference after animation finishes
         isAnimating = false; // Unlock interaction
     }

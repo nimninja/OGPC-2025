@@ -88,22 +88,18 @@ public class TimeManager : MonoBehaviour
         {
             if (value == 5)
             {
-                Debug.Log("Blending from Night to Sunrise.");
                 StartCoroutine(BlendSkybox(skyboxNight, skyboxSunrise, graddientNightToSunrise, 5f));
             }
             else if (value == 15)
             {
-                Debug.Log("Blending from Sunrise to Day.");
                 StartCoroutine(BlendSkybox(skyboxSunrise, skyboxDay, graddientSunriseToDay, 5f));
             }
             else if (value == 25)
             {
-                Debug.Log("Blending from Day to Sunset.");
                 StartCoroutine(BlendSkybox(skyboxDay, skyboxSunset, graddientDayToSunset, 5f));
             }
             else if (value == 35)
             {
-                Debug.Log("Blending from Sunset to Night.");
                 StartCoroutine(BlendSkybox(skyboxSunset, skyboxNight, graddientSunsetToNight, 5f));
             }
         }
@@ -123,7 +119,6 @@ public class TimeManager : MonoBehaviour
 
     private void OnHoursChange(int value)
     {
-        Debug.Log($"Hour changed to: {value}");
     }
 
     private IEnumerator BlendSkybox(Texture2D a, Texture2D b, Gradient lightGradient, float time)
@@ -145,8 +140,6 @@ public class TimeManager : MonoBehaviour
             Color blendedColor = lightGradient.Evaluate(progress);
             globalLight.color = blendedColor;
             RenderSettings.fogColor = blendedColor;
-
-            Debug.Log($"Blending Skybox: Progress = {progress}");
             yield return null;
         }
 
@@ -156,7 +149,6 @@ public class TimeManager : MonoBehaviour
         globalLight.color = lightGradient.Evaluate(1);
         RenderSettings.fogColor = lightGradient.Evaluate(1);
 
-        Debug.Log("Skybox blending complete.");
         isBlending = false;
     }
 }

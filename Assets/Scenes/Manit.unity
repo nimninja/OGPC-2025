@@ -222,8 +222,8 @@ GameObject:
   - component: {fileID: 225738836}
   - component: {fileID: 225738835}
   - component: {fileID: 225738834}
-  - component: {fileID: 225738837}
   - component: {fileID: 225738833}
+  - component: {fileID: 225738837}
   m_Layer: 0
   m_Name: NPC 3 (Press "t" and recieve task)
   m_TagString: Untagged
@@ -334,7 +334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39810350d386d40a197899b23142807e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textBox: {fileID: 1364273386}
+  textComponent: {fileID: 1784001850}
   player: {fileID: 1987121429}
   triggerRadius: 5
 --- !u!1 &522000507

@@ -28,7 +28,7 @@ public class Movement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         
         // Lock the cursor and make it invisible when the game starts
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.None;
         Cursor.visible = false;
 
         // Enable step climbing

@@ -2,15 +2,14 @@ using UnityEngine;
 
 public class ToggleObjects : MonoBehaviour
 {
-    public GameObject cube; // Reference to the Cube
-    public GameObject sphere; // Reference to the Sphere
+    public GameObject cube;
+    public GameObject sphere;
 
-    public void OnButtonPress()
+    public void Toggle_Objects()
     {
-        if (cube != null && sphere != null)
-        {
-            cube.SetActive(false); // Hide the Cube
-            sphere.SetActive(true); // Show the Sphere
-        }
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        cube.SetActive(!cube.activeSelf);
+        sphere.SetActive(!sphere.activeSelf);
     }
 }

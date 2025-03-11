@@ -93,9 +93,9 @@ public class NPC : MonoBehaviour
         while (!isTalking)
         {
             textComponent.text = "Press T to talk";
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.25f);
             textComponent.text = "";
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.25f);
         }
     }
 }

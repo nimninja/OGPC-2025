@@ -4,66 +4,63 @@ using TMPro;
 
 public class ObjectCycler : MonoBehaviour
 {
-    public GameObject[] objects;  // Assign Cube, Cylinder, and Sphere in the Inspector
-    public GameObject upgradePanel; // Assign your Upgrade Panel (UI) in the Inspector
-    public TextMeshProUGUI interactionText; // Drag your TextMeshProUGUI for "Press F to Upgrade"
-    public float detectionRange = 3f; // Distance to trigger message
+    public GameObject[] objects;             // Assign Cube, Cylinder, Sphere
+    public GameObject upgradePanel;          // UI Panel with the cycle button
+    public TextMeshProUGUI interactionText;  // TMP text: "Press F to interact"
+    public Transform player;                 // Player or Camera transform
+    public float interactionDistance = 3f;
+    public Button cycleButton;               // UI Button that cycles objects
 
-    private Transform player;
-    private bool isNear = false;
-    private bool panelOpened = false;
     private int currentIndex = 0;
+    private bool isPanelVisible = false;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform; // Ensure your player has the "Player" tag
-        upgradePanel.SetActive(false); // Hide the upgrade UI initially
-        interactionText.gameObject.SetActive(false); // Hide the interaction text initially
+        // Activate only the first object
+        for (int i = 0; i < objects.Length; i++)
+            objects[i].SetActive(i == currentIndex);
+
+        // Hide panel & interaction text
+        if (upgradePanel != null)
+            upgradePanel.SetActive(false);
+        if (interactionText != null)
+            interactionText.gameObject.SetActive(false);
+
+        // Attach CycleObjects to button
+        if (cycleButton != null)
+            cycleButton.onClick.AddListener(CycleObjects);
     }
 
     void Update()
     {
-        // Check distance to the closest object
-        isNear = false;
-        foreach (GameObject obj in objects)
+        if (player == null || objects.Length == 0) return;
+
+        float dist = Vector3.Distance(player.position, objects[currentIndex].transform.position);
+        bool isClose = dist <= interactionDistance;
+
+        // Show/hide interaction prompt
+        if (interactionText != null)
+            interactionText.gameObject.SetActive(isClose && !isPanelVisible);
+
+        // Toggle panel on F press
+        if (isClose && Input.GetKeyDown(KeyCode.F))
         {
-            if (Vector3.Distance(player.position, obj.transform.position) < detectionRange)
-            {
-                isNear = true;
-                break;
-            }
+            isPanelVisible = !isPanelVisible;
+            if (upgradePanel != null)
+                upgradePanel.SetActive(isPanelVisible);
         }
-
-        // Show interaction text when near an object
-        interactionText.gameObject.SetActive(isNear && !panelOpened);
-
-        // Open upgrade panel when pressing "F" near an object
-        if (isNear && Input.GetKeyDown(KeyCode.F) && !panelOpened)
-        {
-            OpenUpgradePanel();
-        }
-    }
-
-    void OpenUpgradePanel()
-    {
-        upgradePanel.SetActive(true);
-        interactionText.gameObject.SetActive(false); // Hide "Press F to Upgrade" text
-        panelOpened = true;
     }
 
     public void CycleObjects()
     {
-        // Disable the current object
+        // Disable current object
         objects[currentIndex].SetActive(false);
 
-        // Move to the next object
+        // Move to next object
         currentIndex = (currentIndex + 1) % objects.Length;
 
-        // Enable the new object
+        // Enable new object
         objects[currentIndex].SetActive(true);
-
-        // Close the UI panel after the first press
-        upgradePanel.SetActive(false);
-        panelOpened = false; // Allow re-opening when close again
     }
 }
+        

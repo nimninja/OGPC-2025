@@ -1,26 +1,23 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public class CanvasManager : MonoBehaviour
+public class open_world1 : MonoBehaviour
 {
-    public Canvas canvasToRemove;  // The canvas that starts on top and will be removed
+    // Assign these in the Unity Inspector
+    public Canvas currentCanvas; // The canvas currently displayed
+    public Canvas targetCanvas;  // The canvas to open
 
-    // Start is called before the first frame update
-    void Start()
+    // This function will be called when the button is pressed
+    public void SwitchCanvas()
     {
-        // Ensure the canvas starts on top of everything else
-        if (canvasToRemove != null)
+        if (currentCanvas != null)
         {
-            canvasToRemove.sortingOrder = 100; // Set a high sorting order to keep it on top
+            currentCanvas.gameObject.SetActive(false); // Deactivate the current canvas
         }
-    }
 
-    // Call this method when the button is clicked
-    public void OnButtonClick()
-    {
-        if (canvasToRemove != null)
+        if (targetCanvas != null)
         {
-            // Hide the canvas when the button is clicked
-            canvasToRemove.gameObject.SetActive(false);
+            targetCanvas.gameObject.SetActive(true);  // Activate the target canvas
         }
     }
 }

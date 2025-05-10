@@ -2,17 +2,15 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
-public class NPC: MonoBehaviour
+public class NPC4: MonoBehaviour
 {
     public TextMeshProUGUI textComponent; // Assign the TextMeshPro text field
     public Transform player;
     public float triggerRadius = 5f;
     
     private string[] dialogues = {
-        "Hello, traveler!",
-        "The world is full of secrets.",
-        "Beware of the dangers ahead...",
-        "Good luck on your journey!"
+        "Hey, that’s a nice stash you got there. You should spend some time upgrading before the next storm hits!",
+        "RUN HOME AND UPGRADE, QUICK!!!!"
     };
 
     private int dialogueIndex = 0;

@@ -2,17 +2,16 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
-public class NPC: MonoBehaviour
+public class NPC2: MonoBehaviour
 {
     public TextMeshProUGUI textComponent; // Assign the TextMeshPro text field
     public Transform player;
     public float triggerRadius = 5f;
     
     private string[] dialogues = {
-        "Hello, traveler!",
-        "The world is full of secrets.",
-        "Beware of the dangers ahead...",
-        "Good luck on your journey!"
+        "It’s such an honor! Pleasure to meet you ‘The Chosen One’. Please help us! Our world has been bombarded with storms and hurricanes over the years. My house needs rebuilding and could use some work. Could you help me acquire 5 logs from the trees nearby?",
+        "Thank you for your kindness. In return you can have this house!",
+        "Follow the map and venture out of Flower Fields!"
     };
 
     private int dialogueIndex = 0;

@@ -5,8 +5,12 @@ using TMPro;
 public class amountManager : MonoBehaviour
 {
     private int woodCount = 0;
+    private int stoneCount = 0;
+
     public TextMeshProUGUI woodText;
     public Image woodImage;
+    public TextMeshProUGUI stoneText;
+    public Image stoneImage;
 
     void Start()
     {
@@ -26,6 +30,19 @@ public class amountManager : MonoBehaviour
         UpdateUI();
     }
 
+    public void AddStone(int amount)
+    {
+        stoneCount += amount;
+        UpdateUI();
+    }
+
+    public void RemoveStone(int amount)
+    {
+        stoneCount -= amount;
+        if (stoneCount < 0) stoneCount = 0;
+        UpdateUI();
+    }
+
     private void UpdateUI()
     {
         if (woodCount > 0)
@@ -38,6 +55,18 @@ public class amountManager : MonoBehaviour
         {
             woodImage.gameObject.SetActive(false);
             woodText.gameObject.SetActive(false);
+        }
+
+        if (stoneCount > 0)
+        {
+            stoneImage.gameObject.SetActive(true);
+            stoneText.gameObject.SetActive(true);
+            stoneText.text = stoneCount.ToString();
+        }
+        else
+        {
+            stoneImage.gameObject.SetActive(false);
+            stoneText.gameObject.SetActive(false);
         }
     }
 }
